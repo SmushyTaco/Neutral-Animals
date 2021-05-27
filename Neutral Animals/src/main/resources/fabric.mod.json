@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "neutral_animals",
+  "version": "${version}",
+  "name": "Neutral Animals",
+  "description": "This mod makes chickens, cows, pigs, rabbits, and sheep fight back!",
+  "authors": [
+    "SmushyTaco"
+  ],
+  "contact": {
+    "homepage": "https://www.smushytaco.com/",
+    "issues": "https://www.curseforge.com/minecraft/mc-mods/neutral-animals/issues/",
+    "sources": "https://github.com/realSmushyTaco/Neutral-Animals/"
+  },
+  "license": "GNU Lesser General Public License version 3 (LGPLv3)",
+  "icon": "assets/neutral_animals/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "com.smushytaco.neutral_animals.NeutralAnimals"
+      }
+    ]
+  },
+  "mixins": [
+    "neutral_animals.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "fabric-language-kotlin": ">=1.5.0+kotlin.1.4.31",
+    "minecraft": "1.16.x"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.smushytaco.neutral_animals.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ChickenEntityToNeutral",
+    "CowEntityToNeutral",
+    "PigEntityToNeutral",
+    "RabbitEntityToNeutral",
+    "SheepEntityToNeutral"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
