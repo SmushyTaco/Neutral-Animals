@@ -6,6 +6,7 @@
     "ChickenEntityToNeutral",
     "CowEntityToNeutral",
     "PigEntityToNeutral",
+    "PlayerHitTimerAccessor",
     "RabbitEntityToNeutral",
     "SheepEntityToNeutral"
   ],
