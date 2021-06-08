@@ -1,6 +1,5 @@
 plugins {
     id("fabric-loom")
-    id("maven-publish")
     val kotlinVersion: String by System.getProperties()
     kotlin("jvm").version(kotlinVersion)
 }
@@ -13,9 +12,7 @@ version = modVersion
 val mavenGroup: String by project
 group = mavenGroup
 minecraft {}
-repositories {
-    maven("https://maven.fabricmc.net/")
-}
+repositories {}
 dependencies {
     val minecraftVersion: String by project
     minecraft("com.mojang:minecraft:$minecraftVersion")
@@ -29,33 +26,38 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:$fabricKotlinVersion")
 }
 tasks {
-    val javaVersion = JavaVersion.VERSION_1_8.toString()
+    val javaVersion = JavaVersion.VERSION_16
     withType<JavaCompile> {
         options.encoding = "UTF-8"
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
+        sourceCompatibility = javaVersion.toString()
+        targetCompatibility = javaVersion.toString()
+        options.release.set(javaVersion.toString().toInt())
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
-            jvmTarget = javaVersion
+            jvmTarget = javaVersion.toString()
+        }
+        sourceCompatibility = javaVersion.toString()
+        targetCompatibility = javaVersion.toString()
+    }
+    jar {
+        from("LICENSE") {
+            rename { "${it}_${base.archivesBaseName}" }
+        }
+    }
+    processResources {
+        inputs.property("version", project.version)
+        filesMatching("fabric.mod.json") {
+            expand(mutableMapOf("version" to project.version))
+        }
+    }
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(javaVersion.toString()))
         }
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+        withSourcesJar()
     }
-    jar { from("LICENSE") }
-    processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        inputs.property("version", project.version)
-        from(sourceSets["main"].resources.srcDirs) {
-            include("fabric.mod.json")
-            expand(mutableMapOf("version" to project.version))
-        }
-        from(sourceSets["main"].resources.srcDirs) { exclude("fabric.mod.json") }
-    }
-    val sourcesJar by creating(Jar::class) {
-        archiveClassifier.set("sources")
-        from(sourceSets.main.get().allSource)
-    }
-    artifacts { archives(sourcesJar) }
 }

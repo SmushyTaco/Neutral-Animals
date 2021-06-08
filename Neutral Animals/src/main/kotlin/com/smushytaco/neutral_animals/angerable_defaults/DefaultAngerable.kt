@@ -10,6 +10,6 @@ interface DefaultAngerable: Angerable {
     override fun getAngryAt(): UUID? = defaultAngerableValues.targetUuid
     override fun setAngryAt(uuid: UUID?) { defaultAngerableValues.targetUuid = uuid }
     override fun chooseRandomAngerTime() {
-        angerTime = ANGER_TIME_RANGE.choose(RANDOM)
+        angerTime = ANGER_TIME_RANGE.get(RANDOM)
     }
 }
