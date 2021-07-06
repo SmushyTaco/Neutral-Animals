@@ -8,6 +8,7 @@ import net.minecraft.entity.attribute.EntityAttributeInstance
 import net.minecraft.entity.attribute.EntityAttributeModifier
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.mob.PathAwareEntity
+import net.minecraft.entity.passive.*
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.predicate.entity.EntityPredicates
 import net.minecraft.server.world.ServerWorld
@@ -20,46 +21,43 @@ object NeutralAnimals : ModInitializer {
     val RANDOM = Random()
     val ANGER_TIME_RANGE: UniformIntProvider = Durations.betweenSeconds(20, 39)
     val ANGER_PASSING_COOLDOWN_RANGE: UniformIntProvider = Durations.betweenSeconds(4, 6)
-    private fun angerNearbyAnimals(pathAwareEntity: PathAwareEntity) {
-        val d: Double = pathAwareEntity.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE)
+    private fun <T: AnimalEntity, S: AnimalEntity> angerNearbyAnimals(pathAwareEntity: T, pathAwareEntityClass: Class<S>) {
+        val d = pathAwareEntity.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE)
         val box = Box.from(pathAwareEntity.pos).expand(d, 10.0, d)
-        pathAwareEntity.world.getEntitiesByClass(PathAwareEntity::class.java, box, EntityPredicates.EXCEPT_SPECTATOR).stream()
+        pathAwareEntity.world.getEntitiesByClass(pathAwareEntityClass, box, EntityPredicates.EXCEPT_SPECTATOR).stream()
             .filter { pathAwareEntityTwo -> pathAwareEntityTwo !== pathAwareEntity }
             .filter { pathAwareEntityTwo -> pathAwareEntityTwo.target == null }
             .filter { pathAwareEntityTwo -> !pathAwareEntityTwo.isTeammate(pathAwareEntity.target) }
             .forEach { pathAwareEntityTwo -> pathAwareEntityTwo.target = pathAwareEntity.target }
     }
-    private fun tickAngerPassing(defaultAngerable: DefaultAngerable) {
-        if (defaultAngerable !is PathAwareEntity) return
-        if (defaultAngerable.defaultAngerableValues.angerPassingCooldown > 0) {
-            --defaultAngerable.defaultAngerableValues.angerPassingCooldown
+    private fun <T, S> tickAngerPassing(pathAwareEntity: T, pathAwareEntityClass: Class<S>) where T : AnimalEntity, T : DefaultAngerable, S: AnimalEntity {
+        if (pathAwareEntity.defaultAngerableValues.angerPassingCooldown > 0) {
+            --pathAwareEntity.defaultAngerableValues.angerPassingCooldown
         } else {
-            if (defaultAngerable.visibilityCache.canSee((defaultAngerable as PathAwareEntity).target)) angerNearbyAnimals(defaultAngerable)
-            defaultAngerable.defaultAngerableValues.angerPassingCooldown = ANGER_PASSING_COOLDOWN_RANGE.get(defaultAngerable.random)
+            if (pathAwareEntity.visibilityCache.canSee((pathAwareEntity as PathAwareEntity).target)) angerNearbyAnimals(pathAwareEntity, pathAwareEntityClass)
+            pathAwareEntity.defaultAngerableValues.angerPassingCooldown = ANGER_PASSING_COOLDOWN_RANGE.get(pathAwareEntity.random)
         }
     }
-    fun mobTickLogic(defaultAngerable: DefaultAngerable) {
-        if (defaultAngerable !is PathAwareEntity) return
-        val entityAttributeInstance: EntityAttributeInstance = defaultAngerable.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED) ?: return
-        if (defaultAngerable.hasAngerTime()) {
+    fun <T, S> mobTickLogic(pathAwareEntity: T, pathAwareEntityClass: Class<S>) where T : AnimalEntity, T : DefaultAngerable, S: AnimalEntity {
+        val entityAttributeInstance: EntityAttributeInstance = pathAwareEntity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED) ?: return
+        if (pathAwareEntity.hasAngerTime()) {
             if (!entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST)) {
                 entityAttributeInstance.addTemporaryModifier(ATTACKING_SPEED_BOOST)
             }
         } else if (entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST)) {
             entityAttributeInstance.removeModifier(ATTACKING_SPEED_BOOST)
         }
-        defaultAngerable.tickAngerLogic(defaultAngerable.world as ServerWorld?, true)
-        if (defaultAngerable.getTarget() != null) tickAngerPassing(defaultAngerable)
-        if (defaultAngerable.hasAngerTime()) {
-            (defaultAngerable as PlayerHitTimerAccessor).setPlayerHitTimer(defaultAngerable.age)
+        pathAwareEntity.tickAngerLogic(pathAwareEntity.world as ServerWorld, true)
+        if (pathAwareEntity.getTarget() != null) tickAngerPassing(pathAwareEntity, pathAwareEntityClass)
+        if (pathAwareEntity.hasAngerTime()) {
+            (pathAwareEntity as PlayerHitTimerAccessor).setPlayerHitTimer(pathAwareEntity.age)
         }
     }
-    fun neutralAnimalGoalAndTargets(goalSelector: GoalSelector, targetSelector: GoalSelector, defaultAngerable: DefaultAngerable) {
-        if (defaultAngerable !is PathAwareEntity) return
-        goalSelector.add(0, MeleeAttackGoal(defaultAngerable, 1.0, false))
-        targetSelector.add(0, RevengeGoal(defaultAngerable).setGroupRevenge())
-        targetSelector.add(0, FollowTargetGoal(defaultAngerable, PlayerEntity::class.java, 10, true, false, defaultAngerable::shouldAngerAt))
-        targetSelector.add(0, UniversalAngerGoal(defaultAngerable, true))
+    fun <T> neutralAnimalGoalAndTargets(goalSelector: GoalSelector, targetSelector: GoalSelector, pathAwareEntity: T) where T : AnimalEntity, T: DefaultAngerable {
+        goalSelector.add(0, MeleeAttackGoal(pathAwareEntity, 1.0, false))
+        targetSelector.add(0, RevengeGoal(pathAwareEntity).setGroupRevenge())
+        targetSelector.add(0, FollowTargetGoal(pathAwareEntity, PlayerEntity::class.java, 10, true, false, pathAwareEntity::shouldAngerAt))
+        targetSelector.add(0, UniversalAngerGoal(pathAwareEntity, true))
     }
     override fun onInitialize() {}
 }
