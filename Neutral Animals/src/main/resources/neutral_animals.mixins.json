@@ -3,8 +3,10 @@
   "package": "com.smushytaco.neutral_animals.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "AttributeContainerAccess",
     "ChickenEntityToNeutral",
     "CowEntityToNeutral",
+    "DamageAttributes",
     "PigEntityToNeutral",
     "PlayerHitTimerAccessor",
     "RabbitEntityToNeutral",
