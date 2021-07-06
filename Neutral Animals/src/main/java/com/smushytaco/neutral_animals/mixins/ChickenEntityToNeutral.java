@@ -38,7 +38,7 @@ public abstract class ChickenEntityToNeutral extends AnimalEntity implements Def
     }
     @Override
     protected void mobTick() {
-        NeutralAnimals.INSTANCE.mobTickLogic((ChickenEntity & DefaultAngerable) (Object) this, ChickenEntity.class);
+        NeutralAnimals.INSTANCE.mobTickLogic((ChickenEntity & DefaultAngerable) (Object) this);
         super.mobTick();
     }
     @Override

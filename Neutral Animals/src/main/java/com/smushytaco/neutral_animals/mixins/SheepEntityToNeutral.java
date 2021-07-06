@@ -38,7 +38,7 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
     }
     @Inject(method = "mobTick", at = @At("HEAD"))
     protected void hookMobTick(CallbackInfo ci) {
-        NeutralAnimals.INSTANCE.mobTickLogic((SheepEntity & DefaultAngerable) (Object) this, SheepEntity.class);
+        NeutralAnimals.INSTANCE.mobTickLogic((SheepEntity & DefaultAngerable) (Object) this);
     }
     @Override
     public void setTarget(@Nullable LivingEntity target) {

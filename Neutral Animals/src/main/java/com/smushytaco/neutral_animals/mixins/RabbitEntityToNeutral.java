@@ -38,7 +38,7 @@ public abstract class RabbitEntityToNeutral extends AnimalEntity implements Defa
     }
     @Inject(method = "mobTick", at = @At("HEAD"))
     protected void hookMobTick(CallbackInfo ci) {
-        NeutralAnimals.INSTANCE.mobTickLogic((RabbitEntity & DefaultAngerable) (Object) this, RabbitEntity.class);
+        NeutralAnimals.INSTANCE.mobTickLogic((RabbitEntity & DefaultAngerable) (Object) this);
     }
     @Override
     public void setTarget(@Nullable LivingEntity target) {
