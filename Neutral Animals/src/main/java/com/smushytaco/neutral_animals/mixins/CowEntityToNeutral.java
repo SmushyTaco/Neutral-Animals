@@ -50,7 +50,7 @@ public abstract class CowEntityToNeutral extends AnimalEntity implements Default
     }
     @Override
     protected void mobTick() {
-        NeutralAnimals.INSTANCE.mobTickLogic((CowEntity & DefaultAngerable) (Object) this, CowEntity.class);
+        NeutralAnimals.INSTANCE.mobTickLogic((CowEntity & DefaultAngerable) (Object) this);
         super.mobTick();
     }
 }
