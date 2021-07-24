@@ -23,6 +23,7 @@ public abstract class ChickenEntityToNeutral extends AnimalEntity implements Def
     }
     @Inject(method = "initGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) {
+        if (!NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) return;
         NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (ChickenEntity & DefaultAngerable) (Object) this);
     }
     @NotNull
@@ -30,24 +31,30 @@ public abstract class ChickenEntityToNeutral extends AnimalEntity implements Def
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     private void hookWriteCustomDataToTag(NbtCompound nbt, CallbackInfo ci) {
+        if (!NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) return;
         writeAngerToNbt(nbt);
     }
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void hookReadCustomDataFromTag(NbtCompound nbt, CallbackInfo ci) {
+        if (!NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) return;
         readAngerFromNbt(world, nbt);
     }
     @Override
     protected void mobTick() {
-        NeutralAnimals.INSTANCE.mobTickLogic((ChickenEntity & DefaultAngerable) (Object) this);
+        if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) {
+            NeutralAnimals.INSTANCE.mobTickLogic((ChickenEntity & DefaultAngerable) (Object) this);
+        }
         super.mobTick();
     }
     @Override
     public void setTarget(@Nullable LivingEntity target) {
-        if (getTarget() == null && target != null) {
-            defaultAngerableValues.setAngerPassingCooldown(NeutralAnimals.INSTANCE.getANGER_PASSING_COOLDOWN_RANGE().get(random));
-        }
-        if (target instanceof PlayerEntity) {
-            setAttacking((PlayerEntity) target);
+        if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) {
+            if (getTarget() == null && target != null) {
+                defaultAngerableValues.setAngerPassingCooldown(NeutralAnimals.INSTANCE.getANGER_PASSING_COOLDOWN_RANGE().get(random));
+            }
+            if (target instanceof PlayerEntity) {
+                setAttacking((PlayerEntity) target);
+            }
         }
         super.setTarget(target);
     }

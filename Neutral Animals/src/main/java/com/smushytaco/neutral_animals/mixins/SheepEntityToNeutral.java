@@ -23,6 +23,7 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
     }
     @Inject(method = "initGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) {
+        if (!NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) return;
         NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (SheepEntity & DefaultAngerable) (Object) this);
     }
     @NotNull
@@ -30,23 +31,28 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     private void hookWriteCustomDataToTag(NbtCompound nbt, CallbackInfo ci) {
+        if (!NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) return;
         writeAngerToNbt(nbt);
     }
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void hookReadCustomDataFromTag(NbtCompound nbt, CallbackInfo ci) {
+        if (!NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) return;
         readAngerFromNbt(world, nbt);
     }
     @Inject(method = "mobTick", at = @At("HEAD"))
     protected void hookMobTick(CallbackInfo ci) {
+        if (!NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) return;
         NeutralAnimals.INSTANCE.mobTickLogic((SheepEntity & DefaultAngerable) (Object) this);
     }
     @Override
     public void setTarget(@Nullable LivingEntity target) {
-        if (getTarget() == null && target != null) {
-            defaultAngerableValues.setAngerPassingCooldown(NeutralAnimals.INSTANCE.getANGER_PASSING_COOLDOWN_RANGE().get(random));
-        }
-        if (target instanceof PlayerEntity) {
-            setAttacking((PlayerEntity) target);
+        if (NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) {
+            if (getTarget() == null && target != null) {
+                defaultAngerableValues.setAngerPassingCooldown(NeutralAnimals.INSTANCE.getANGER_PASSING_COOLDOWN_RANGE().get(random));
+            }
+            if (target instanceof PlayerEntity) {
+                setAttacking((PlayerEntity) target);
+            }
         }
         super.setTarget(target);
     }
