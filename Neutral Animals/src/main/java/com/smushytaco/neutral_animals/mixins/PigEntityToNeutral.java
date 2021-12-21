@@ -22,6 +22,7 @@ public abstract class PigEntityToNeutral extends AnimalEntity implements Default
         super(entityType, world);
     }
     @Inject(method = "initGoals", at = @At("RETURN"))
+    @SuppressWarnings("all")
     private void hookInitGoals(CallbackInfo ci) {
         if (!NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) return;
         NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (PigEntity & DefaultAngerable) (Object) this);
@@ -40,6 +41,7 @@ public abstract class PigEntityToNeutral extends AnimalEntity implements Default
         readAngerFromNbt(world, nbt);
     }
     @Override
+    @SuppressWarnings("all")
     protected void mobTick() {
         if (NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) {
             NeutralAnimals.INSTANCE.mobTickLogic((PigEntity & DefaultAngerable) (Object) this);

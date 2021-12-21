@@ -65,7 +65,7 @@ object NeutralAnimals : ModInitializer {
     fun <T> neutralAnimalGoalAndTargets(goalSelector: GoalSelector, targetSelector: GoalSelector, animalEntity: T) where T : AnimalEntity, T: DefaultAngerable {
         goalSelector.add(0, MeleeAttackGoal(animalEntity, 1.0, false))
         targetSelector.add(0, RevengeGoal(animalEntity).setGroupRevenge())
-        targetSelector.add(0, FollowTargetGoal(animalEntity, PlayerEntity::class.java, 10, true, false, animalEntity::shouldAngerAt))
+        targetSelector.add(0, ActiveTargetGoal(animalEntity, PlayerEntity::class.java, 10, true, false, animalEntity::shouldAngerAt))
         targetSelector.add(0, UniversalAngerGoal(animalEntity, true))
     }
     override fun onInitialize() {
