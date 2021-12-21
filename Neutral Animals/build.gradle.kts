@@ -12,7 +12,10 @@ version = modVersion
 val mavenGroup: String by project
 group = mavenGroup
 minecraft {}
-repositories { maven("https://maven.shedaniel.me/") }
+repositories {
+    maven("https://maven.shedaniel.me/")
+    maven("https://maven.terraformersmc.com/")
+}
 dependencies {
     val minecraftVersion: String by project
     minecraft("com.mojang:minecraft:$minecraftVersion")
@@ -25,12 +28,12 @@ dependencies {
     val fabricKotlinVersion: String by project
     modImplementation("net.fabricmc:fabric-language-kotlin:$fabricKotlinVersion")
     val modMenuVersion: String by project
-    modImplementation("io.github.prospector:modmenu:$modMenuVersion")
+    modImplementation("com.terraformersmc:modmenu:$modMenuVersion")
     val clothConfigVersion: String by project
     modApi("me.shedaniel.cloth:cloth-config-fabric:$clothConfigVersion") { exclude("net.fabricmc.fabric-api") }
 }
 tasks {
-    val javaVersion = JavaVersion.VERSION_16
+    val javaVersion = JavaVersion.VERSION_17
     withType<JavaCompile> {
         options.encoding = "UTF-8"
         sourceCompatibility = javaVersion.toString()

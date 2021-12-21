@@ -22,6 +22,7 @@ public abstract class RabbitEntityToNeutral extends AnimalEntity implements Defa
         super(entityType, world);
     }
     @Inject(method = "initGoals", at = @At("RETURN"))
+    @SuppressWarnings("all")
     private void hookInitGoals(CallbackInfo ci) {
         if (!NeutralAnimals.INSTANCE.getConfig().getRabbitsAreNeutral()) return;
         NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (RabbitEntity & DefaultAngerable) (Object) this);
@@ -40,6 +41,7 @@ public abstract class RabbitEntityToNeutral extends AnimalEntity implements Defa
         readAngerFromNbt(world, nbt);
     }
     @Inject(method = "mobTick", at = @At("HEAD"))
+    @SuppressWarnings("all")
     protected void hookMobTick(CallbackInfo ci) {
         if (!NeutralAnimals.INSTANCE.getConfig().getRabbitsAreNeutral()) return;
         NeutralAnimals.INSTANCE.mobTickLogic((RabbitEntity & DefaultAngerable) (Object) this);

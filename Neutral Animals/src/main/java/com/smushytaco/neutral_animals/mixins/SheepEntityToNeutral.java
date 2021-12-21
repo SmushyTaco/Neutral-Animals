@@ -22,6 +22,7 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
         super(entityType, world);
     }
     @Inject(method = "initGoals", at = @At("RETURN"))
+    @SuppressWarnings("all")
     private void hookInitGoals(CallbackInfo ci) {
         if (!NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) return;
         NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (SheepEntity & DefaultAngerable) (Object) this);
@@ -40,6 +41,7 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
         readAngerFromNbt(world, nbt);
     }
     @Inject(method = "mobTick", at = @At("HEAD"))
+    @SuppressWarnings("all")
     protected void hookMobTick(CallbackInfo ci) {
         if (!NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) return;
         NeutralAnimals.INSTANCE.mobTickLogic((SheepEntity & DefaultAngerable) (Object) this);
