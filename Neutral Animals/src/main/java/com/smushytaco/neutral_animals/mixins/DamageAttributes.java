@@ -13,7 +13,7 @@ public abstract class DamageAttributes {
     @Inject(method = "getAttributes", at = @At("RETURN"))
     private void hookGetAttributes(CallbackInfoReturnable<AttributeContainer> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
-		AttributeContainer attributes = cir.getReturnValue();
+	AttributeContainer attributes = cir.getReturnValue();
         if (attributes.hasAttribute(EntityAttributes.GENERIC_ATTACK_DAMAGE) || !(livingEntity instanceof ChickenEntity) && !(livingEntity instanceof CowEntity) && !(livingEntity instanceof PigEntity) && !(livingEntity instanceof RabbitEntity) && !(livingEntity instanceof SheepEntity)) return;
         ((AttributeContainerAccess) attributes).getCustom().putIfAbsent(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (it) -> {}));
     }
