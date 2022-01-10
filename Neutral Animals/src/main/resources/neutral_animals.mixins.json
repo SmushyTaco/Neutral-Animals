@@ -10,7 +10,8 @@
     "PigEntityToNeutral",
     "PlayerHitTimerAccessor",
     "RabbitEntityToNeutral",
-    "SheepEntityToNeutral"
+    "SheepEntityToNeutral",
+    "VillagerEntityToNeutral"
   ],
   "injectors": {
     "defaultRequire": 1
