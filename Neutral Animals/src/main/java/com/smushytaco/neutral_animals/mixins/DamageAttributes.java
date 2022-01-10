@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 
 @Mixin(LivingEntity.class)
 public abstract class DamageAttributes {
-	
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void init(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo info) {
 		LivingEntity livingEntity = (LivingEntity)(Object)this;
