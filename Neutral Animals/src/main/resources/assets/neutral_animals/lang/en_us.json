@@ -4,5 +4,6 @@
   "text.autoconfig.neutral_animals.option.cowsAreNeutral": "Cows Are Neutral",
   "text.autoconfig.neutral_animals.option.pigsAreNeutral": "Pigs Are Neutral",
   "text.autoconfig.neutral_animals.option.rabbitsAreNeutral": "Rabbits Are Neutral",
-  "text.autoconfig.neutral_animals.option.sheepAreNeutral": "Sheep Are Neutral"
+  "text.autoconfig.neutral_animals.option.sheepAreNeutral": "Sheep Are Neutral",
+  "text.autoconfig.neutral_animals.option.villagersAreNeutral": "Villagers Are Neutral"
 }

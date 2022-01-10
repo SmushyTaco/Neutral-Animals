@@ -15,4 +15,6 @@ class ModConfiguration: ConfigData {
     val rabbitsAreNeutral = true
     @Comment("Default value is yes. If set to yes sheep will be neutral. If set to no they won't. After modifying this value if you're currently in a world you'll need to relaunch the world for things to take effect.")
     val sheepAreNeutral = true
+    @Comment("Default value is yes. If set to yes villagers will be neutral. If set to no they won't. After modifying this value if you're currently in a world you'll need to relaunch the world for things to take effect.")
+    val villagersAreNeutral = true
 }
