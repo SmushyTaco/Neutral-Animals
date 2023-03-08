@@ -1,0 +1,9 @@
+{
+  "text.autoconfig.neutral_animals.title": "Configuration de Neutral Animals",
+  "text.autoconfig.neutral_animals.option.chickensAreNeutral": "Les Poules sont neutres",
+  "text.autoconfig.neutral_animals.option.cowsAreNeutral": "Les Vaches sont neutresl",
+  "text.autoconfig.neutral_animals.option.pigsAreNeutral": "Les Cochons sont neutres",
+  "text.autoconfig.neutral_animals.option.rabbitsAreNeutral": "Les Lapins sont neutres",
+  "text.autoconfig.neutral_animals.option.sheepAreNeutral": "Les Moutons sont neutres",
+  "text.autoconfig.neutral_animals.option.villagersAreNeutral": "Les Villageois sont neutres"
+}
