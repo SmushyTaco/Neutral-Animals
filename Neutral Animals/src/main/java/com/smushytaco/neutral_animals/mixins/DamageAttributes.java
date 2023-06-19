@@ -16,7 +16,6 @@ public abstract class DamageAttributes {
 	private void init(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo info) {
 		LivingEntity livingEntity = (LivingEntity) (Object) this;
 		AttributeContainer container = livingEntity.getAttributes();
-		if (container.hasAttribute(EntityAttributes.GENERIC_ATTACK_DAMAGE) || (!(livingEntity instanceof ChickenEntity) && !(livingEntity instanceof CowEntity) && !(livingEntity instanceof PigEntity) && !(livingEntity instanceof RabbitEntity) && !(livingEntity instanceof SheepEntity) && !(livingEntity instanceof VillagerEntity))) return;
-		((AttributeContainerAccess) container).getCustom().putIfAbsent(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, (it) -> {}));
+		if (!container.hasAttribute(EntityAttributes.GENERIC_ATTACK_DAMAGE) && (livingEntity instanceof ChickenEntity || livingEntity instanceof CowEntity || livingEntity instanceof PigEntity || livingEntity instanceof RabbitEntity || livingEntity instanceof SheepEntity || livingEntity instanceof VillagerEntity)) ((AttributeContainerAccess) container).getCustom().putIfAbsent(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE, it -> {}));
 	}
 }
