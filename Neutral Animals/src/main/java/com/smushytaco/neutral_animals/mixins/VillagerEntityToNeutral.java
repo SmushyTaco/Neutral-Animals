@@ -1,8 +1,11 @@
 package com.smushytaco.neutral_animals.mixins;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.smushytaco.neutral_animals.NeutralAnimals;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerableValues;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -26,8 +29,7 @@ public abstract class VillagerEntityToNeutral extends MerchantEntity implements 
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void hookReadCustomDataFromTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) readAngerFromNbt(getWorld(), nbt); }
     @Inject(method = "mobTick", at = @At("HEAD"))
-    @SuppressWarnings("all")
-    private void mobTick(CallbackInfo ci) {
-        if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((VillagerEntity & DefaultAngerable) (Object) this);
-    }
+    private void mobTick(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((VillagerEntity & DefaultAngerable) (Object) this); }
+    @ModifyReturnValue(method = "createVillagerAttributes", at = @At("RETURN"))
+    private static DefaultAttributeContainer.Builder hookCreateVillagerAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
 }

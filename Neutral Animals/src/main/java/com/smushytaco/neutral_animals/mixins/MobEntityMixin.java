@@ -27,7 +27,6 @@ public abstract class MobEntityMixin extends LivingEntity {
     @Shadow
     @Final
     protected GoalSelector targetSelector;
-
     @Inject(method = "setTarget", at = @At("HEAD"))
     private void hookSetTarget(@Nullable LivingEntity target, CallbackInfo ci) {
         MobEntity mobEntity = (MobEntity) (Object) this;
@@ -38,7 +37,6 @@ public abstract class MobEntityMixin extends LivingEntity {
         }
     }
     @Inject(method = "initGoals", at = @At("RETURN"))
-    @SuppressWarnings("ConstantConditions")
     private void hookInitGoals(CallbackInfo ci) {
         if ((MobEntity) (Object) this instanceof VillagerEntity && NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (VillagerEntity & DefaultAngerable) (Object) this);
     }

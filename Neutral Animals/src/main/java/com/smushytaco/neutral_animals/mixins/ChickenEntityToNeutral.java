@@ -1,8 +1,11 @@
 package com.smushytaco.neutral_animals.mixins;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.smushytaco.neutral_animals.NeutralAnimals;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerableValues;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -22,10 +25,11 @@ public abstract class ChickenEntityToNeutral extends AnimalEntity implements Def
     @Override
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "initGoals", at = @At("RETURN"))
-    @SuppressWarnings("all")
     private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (ChickenEntity & DefaultAngerable) (Object) this); }
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     private void hookWriteCustomDataToTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) writeAngerToNbt(nbt); }
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void hookReadCustomDataFromTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) readAngerFromNbt(getWorld(), nbt); }
+    @ModifyReturnValue(method = "createChickenAttributes", at = @At("RETURN"))
+    private static DefaultAttributeContainer.Builder hookCreateChickenAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
 }
