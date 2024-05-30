@@ -1,9 +1,11 @@
 package com.smushytaco.neutral_animals.mixins;
-
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.smushytaco.neutral_animals.NeutralAnimals;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerableValues;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.world.World;
@@ -22,6 +24,7 @@ public abstract class CowEntityToNeutral extends AnimalEntity implements Default
     @Override
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "initGoals", at = @At("RETURN"))
-    @SuppressWarnings("all")
     private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (CowEntity & DefaultAngerable) (Object) this); }
+    @ModifyReturnValue(method = "createCowAttributes", at = @At("RETURN"))
+    private static DefaultAttributeContainer.Builder hookCreateCowAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
 }

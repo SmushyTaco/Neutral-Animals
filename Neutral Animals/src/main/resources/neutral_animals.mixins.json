@@ -4,10 +4,8 @@
   "compatibilityLevel": "JAVA_${java}",
   "mixins": [
     "AnimalEntityMixin",
-    "AttributeContainerAccess",
     "ChickenEntityToNeutral",
     "CowEntityToNeutral",
-    "DamageAttributes",
     "EntityRandomAccessor",
     "MobEntityMixin",
     "PigEntityToNeutral",
