@@ -14,16 +14,16 @@ import net.minecraft.entity.mob.PathAwareEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.predicate.entity.EntityPredicates
 import net.minecraft.server.world.ServerWorld
+import net.minecraft.util.Identifier
 import net.minecraft.util.TimeHelper
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.intprovider.UniformIntProvider
-import java.util.*
 object NeutralAnimals : ModInitializer {
     const val MOD_ID = "neutral_animals"
     lateinit var config: ModConfiguration
         private set
-    private val ATTACKING_SPEED_BOOST_ID = UUID.fromString("49455A49-7EC5-45BA-B886-3B90B23A1718")
-    private val ATTACKING_SPEED_BOOST = EntityAttributeModifier(ATTACKING_SPEED_BOOST_ID, "Attacking speed boost", 0.05, EntityAttributeModifier.Operation.ADD_VALUE)
+    private val ATTACKING_SPEED_BOOST_IDENTIFIER = Identifier.of(MOD_ID, "attacking_speed_boost")
+    private val ATTACKING_SPEED_BOOST = EntityAttributeModifier(ATTACKING_SPEED_BOOST_IDENTIFIER, 0.05, EntityAttributeModifier.Operation.ADD_VALUE)
     val ANGER_TIME_RANGE: UniformIntProvider = TimeHelper.betweenSeconds(20, 39)
     val ANGER_PASSING_COOLDOWN_RANGE: UniformIntProvider = TimeHelper.betweenSeconds(4, 6)
     private fun <T: PathAwareEntity> angerNearbyPathAwareEntities(pathAwareEntity: T) {
@@ -42,8 +42,8 @@ object NeutralAnimals : ModInitializer {
     fun <T> mobTickLogic(pathAwareEntity: T) where T : PathAwareEntity, T : DefaultAngerable {
         val entityAttributeInstance: EntityAttributeInstance = pathAwareEntity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED) ?: return
         if (pathAwareEntity.hasAngerTime()) {
-            if (!entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST)) entityAttributeInstance.addTemporaryModifier(ATTACKING_SPEED_BOOST)
-        } else if (entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST)) {
+            if (!entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST_IDENTIFIER)) entityAttributeInstance.addTemporaryModifier(ATTACKING_SPEED_BOOST)
+        } else if (entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST_IDENTIFIER)) {
             entityAttributeInstance.removeModifier(ATTACKING_SPEED_BOOST)
         }
         pathAwareEntity.tickAngerLogic(pathAwareEntity.world as ServerWorld, true)
