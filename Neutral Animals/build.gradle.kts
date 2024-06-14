@@ -43,7 +43,7 @@ tasks {
         filesMatching("*.mixins.json") { expand(mutableMapOf("java" to project.extra["java_version"] as String)) }
     }
     java {
-        toolchain { languageVersion = JavaLanguageVersion.of(javaVersion.toString()) }
+        toolchain.languageVersion = JavaLanguageVersion.of(javaVersion.toString())
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
         withSourcesJar()
