@@ -26,5 +26,5 @@ public abstract class CowEntityToNeutral extends AnimalEntity implements Default
     @Inject(method = "initGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (CowEntity & DefaultAngerable) (Object) this); }
     @ModifyReturnValue(method = "createCowAttributes", at = @At("RETURN"))
-    private static DefaultAttributeContainer.Builder hookCreateCowAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
+    private static DefaultAttributeContainer.Builder hookCreateCowAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }
