@@ -31,5 +31,5 @@ public abstract class PigEntityToNeutral extends AnimalEntity implements Default
     @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
     private void hookReadCustomDataFromTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) readAngerFromNbt(getWorld(), nbt); }
     @ModifyReturnValue(method = "createPigAttributes", at = @At("RETURN"))
-    private static DefaultAttributeContainer.Builder hookCreatePigAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
+    private static DefaultAttributeContainer.Builder hookCreatePigAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }

@@ -31,5 +31,5 @@ public abstract class VillagerEntityToNeutral extends MerchantEntity implements 
     @Inject(method = "mobTick", at = @At("HEAD"))
     private void mobTick(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((VillagerEntity & DefaultAngerable) (Object) this); }
     @ModifyReturnValue(method = "createVillagerAttributes", at = @At("RETURN"))
-    private static DefaultAttributeContainer.Builder hookCreateVillagerAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
+    private static DefaultAttributeContainer.Builder hookCreateVillagerAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }

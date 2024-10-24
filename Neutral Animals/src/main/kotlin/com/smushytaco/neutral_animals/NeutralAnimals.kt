@@ -27,7 +27,7 @@ object NeutralAnimals : ModInitializer {
     val ANGER_TIME_RANGE: UniformIntProvider = TimeHelper.betweenSeconds(20, 39)
     val ANGER_PASSING_COOLDOWN_RANGE: UniformIntProvider = TimeHelper.betweenSeconds(4, 6)
     private fun <T: PathAwareEntity> angerNearbyPathAwareEntities(pathAwareEntity: T) {
-        val followRange = pathAwareEntity.getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE)
+        val followRange = pathAwareEntity.getAttributeValue(EntityAttributes.FOLLOW_RANGE)
         val box = Box.from(pathAwareEntity.pos).expand(followRange, 10.0, followRange)
         pathAwareEntity.world.getEntitiesByClass(pathAwareEntity.javaClass, box, EntityPredicates.EXCEPT_SPECTATOR).stream().filter { it !== pathAwareEntity }.filter { it.target == null }.filter { it.isTeammate(pathAwareEntity.target) }.forEach { it.target = pathAwareEntity.target }
     }
@@ -40,7 +40,7 @@ object NeutralAnimals : ModInitializer {
         }
     }
     fun <T> mobTickLogic(pathAwareEntity: T) where T : PathAwareEntity, T : DefaultAngerable {
-        val entityAttributeInstance: EntityAttributeInstance = pathAwareEntity.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED) ?: return
+        val entityAttributeInstance: EntityAttributeInstance = pathAwareEntity.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED) ?: return
         if (pathAwareEntity.hasAngerTime()) {
             if (!entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST_IDENTIFIER)) entityAttributeInstance.addTemporaryModifier(ATTACKING_SPEED_BOOST)
         } else if (entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST_IDENTIFIER)) {

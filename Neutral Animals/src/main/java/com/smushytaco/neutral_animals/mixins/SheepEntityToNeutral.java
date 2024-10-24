@@ -33,5 +33,5 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
     @Inject(method = "mobTick", at = @At("HEAD"))
     protected void hookMobTick(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((SheepEntity & DefaultAngerable) (Object) this); }
     @ModifyReturnValue(method = "createSheepAttributes", at = @At("RETURN"))
-    private static DefaultAttributeContainer.Builder hookCreateSheepAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
+    private static DefaultAttributeContainer.Builder hookCreateSheepAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }

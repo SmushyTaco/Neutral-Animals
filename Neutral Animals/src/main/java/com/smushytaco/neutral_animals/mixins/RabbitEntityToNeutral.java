@@ -33,5 +33,5 @@ public abstract class RabbitEntityToNeutral extends AnimalEntity implements Defa
     @Inject(method = "mobTick", at = @At("HEAD"))
     protected void hookMobTick(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getRabbitsAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((RabbitEntity & DefaultAngerable) (Object) this); }
     @ModifyReturnValue(method = "createRabbitAttributes", at = @At("RETURN"))
-    private static DefaultAttributeContainer.Builder hookCreateRabbitAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.GENERIC_ATTACK_DAMAGE); }
+    private static DefaultAttributeContainer.Builder hookCreateRabbitAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }
