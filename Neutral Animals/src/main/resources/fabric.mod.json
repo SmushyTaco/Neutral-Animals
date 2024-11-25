@@ -21,9 +21,6 @@
         "adapter": "kotlin",
         "value": "com.smushytaco.neutral_animals.NeutralAnimals"
       }
-    ],
-    "modmenu": [
-      "com.smushytaco.neutral_animals.configuration_support.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -35,9 +32,6 @@
     "fabric-language-kotlin": ">=${fabric_language_kotlin}",
     "minecraft": ">=${minecraft}",
     "java": ">=${java}",
-    "cloth-config2": ">=${clothconfig}"
-  },
-  "suggests": {
-    "modmenu": ">=${modmenu}"
+    "owo": ">=${owo_version}"
   }
 }

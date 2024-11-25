@@ -1,10 +1,6 @@
 package com.smushytaco.neutral_animals
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable
-import com.smushytaco.neutral_animals.configuration_support.ModConfiguration
 import com.smushytaco.neutral_animals.mixins.PlayerHitTimerAccessor
-import me.shedaniel.autoconfig.AutoConfig
-import me.shedaniel.autoconfig.annotation.Config
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer
 import net.fabricmc.api.ModInitializer
 import net.minecraft.entity.ai.goal.*
 import net.minecraft.entity.attribute.EntityAttributeInstance
@@ -20,8 +16,7 @@ import net.minecraft.util.math.Box
 import net.minecraft.util.math.intprovider.UniformIntProvider
 object NeutralAnimals : ModInitializer {
     const val MOD_ID = "neutral_animals"
-    lateinit var config: ModConfiguration
-        private set
+    val config = ModConfig.createAndLoad()
     private val ATTACKING_SPEED_BOOST_IDENTIFIER = Identifier.of(MOD_ID, "attacking_speed_boost")
     private val ATTACKING_SPEED_BOOST = EntityAttributeModifier(ATTACKING_SPEED_BOOST_IDENTIFIER, 0.05, EntityAttributeModifier.Operation.ADD_VALUE)
     val ANGER_TIME_RANGE: UniformIntProvider = TimeHelper.betweenSeconds(20, 39)
@@ -56,10 +51,5 @@ object NeutralAnimals : ModInitializer {
         targetSelector.add(0, ActiveTargetGoal(pathAwareEntity, PlayerEntity::class.java, 10, true, false, pathAwareEntity::shouldAngerAt))
         targetSelector.add(0, UniversalAngerGoal(pathAwareEntity, true))
     }
-    override fun onInitialize() {
-        AutoConfig.register(ModConfiguration::class.java) { definition: Config, configClass: Class<ModConfiguration> ->
-            GsonConfigSerializer(definition, configClass)
-        }
-        config = AutoConfig.getConfigHolder(ModConfiguration::class.java).config
-    }
+    override fun onInitialize() {}
 }
