@@ -1,9 +1,9 @@
 {
-  "text.autoconfig.neutral_animals.title": "Neutral Animals Configuration",
-  "text.autoconfig.neutral_animals.option.chickensAreNeutral": "Chickens Are Neutral",
-  "text.autoconfig.neutral_animals.option.cowsAreNeutral": "Cows Are Neutral",
-  "text.autoconfig.neutral_animals.option.pigsAreNeutral": "Pigs Are Neutral",
-  "text.autoconfig.neutral_animals.option.rabbitsAreNeutral": "Rabbits Are Neutral",
-  "text.autoconfig.neutral_animals.option.sheepAreNeutral": "Sheep Are Neutral",
-  "text.autoconfig.neutral_animals.option.villagersAreNeutral": "Villagers Are Neutral"
+  "text.config.neutral_animals.title": "Neutral Animals Configuration",
+  "text.config.neutral_animals.option.chickensAreNeutral": "Chickens Are Neutral",
+  "text.config.neutral_animals.option.cowsAreNeutral": "Cows Are Neutral",
+  "text.config.neutral_animals.option.pigsAreNeutral": "Pigs Are Neutral",
+  "text.config.neutral_animals.option.rabbitsAreNeutral": "Rabbits Are Neutral",
+  "text.config.neutral_animals.option.sheepAreNeutral": "Sheep Are Neutral",
+  "text.config.neutral_animals.option.villagersAreNeutral": "Villagers Are Neutral"
 }
