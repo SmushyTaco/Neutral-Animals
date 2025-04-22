@@ -23,6 +23,7 @@ public abstract class VillagerEntityToNeutral extends MerchantEntity implements 
     DefaultAngerableValues defaultAngerableValues = new DefaultAngerableValues();
     @NotNull
     @Override
+    @SuppressWarnings("AddedMixinMembersNamePattern")
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     private void hookWriteCustomDataToTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) writeAngerToNbt(nbt); }

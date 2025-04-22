@@ -23,6 +23,7 @@ public abstract class RabbitEntityToNeutral extends AnimalEntity implements Defa
     DefaultAngerableValues defaultAngerableValues = new DefaultAngerableValues();
     @NotNull
     @Override
+    @SuppressWarnings("AddedMixinMembersNamePattern")
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "initGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getRabbitsAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (RabbitEntity & DefaultAngerable) (Object) this); }

@@ -12,6 +12,6 @@ interface DefaultAngerable: Angerable {
     override fun setAngryAt(uuid: UUID?) { defaultAngerableValues.targetUuid = uuid }
     override fun chooseRandomAngerTime() {
         if (this !is Entity) return
-        angerTime = ANGER_TIME_RANGE.get((this as EntityRandomAccessor).random)
+        angerTime = ANGER_TIME_RANGE[(this as EntityRandomAccessor).random]
     }
 }

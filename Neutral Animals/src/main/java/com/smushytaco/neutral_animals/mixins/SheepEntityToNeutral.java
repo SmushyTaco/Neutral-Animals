@@ -23,6 +23,7 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
     DefaultAngerableValues defaultAngerableValues = new DefaultAngerableValues();
     @NotNull
     @Override
+    @SuppressWarnings("AddedMixinMembersNamePattern")
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "initGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (SheepEntity & DefaultAngerable) (Object) this); }

@@ -23,6 +23,7 @@ public abstract class ChickenEntityToNeutral extends AnimalEntity implements Def
     DefaultAngerableValues defaultAngerableValues = new DefaultAngerableValues();
     @NotNull
     @Override
+    @SuppressWarnings("AddedMixinMembersNamePattern")
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "initGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (ChickenEntity & DefaultAngerable) (Object) this); }

@@ -33,7 +33,7 @@ public abstract class MobEntityMixin extends LivingEntity {
         if (!(mobEntity instanceof DefaultAngerable defaultAngerable)) return;
         if (mobEntity instanceof ChickenEntity && NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral() || mobEntity instanceof CowEntity && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral() || mobEntity instanceof PigEntity && NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral() || mobEntity instanceof RabbitEntity && NeutralAnimals.INSTANCE.getConfig().getRabbitsAreNeutral() || mobEntity instanceof SheepEntity && NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral() || mobEntity instanceof VillagerEntity && NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) {
             if (getTarget() == null && target != null) defaultAngerable.getDefaultAngerableValues().setAngerPassingCooldown(NeutralAnimals.INSTANCE.getANGER_PASSING_COOLDOWN_RANGE().get(random));
-            if (target instanceof PlayerEntity playerEntity) setAttacking(playerEntity);
+            if (target instanceof PlayerEntity playerEntity) setAttacking(playerEntity, 100);
         }
     }
     @Inject(method = "initGoals", at = @At("RETURN"))

@@ -42,7 +42,7 @@ object NeutralAnimals : ModInitializer {
             entityAttributeInstance.removeModifier(ATTACKING_SPEED_BOOST)
         }
         pathAwareEntity.tickAngerLogic(pathAwareEntity.world as ServerWorld, true)
-        if (pathAwareEntity.getTarget() != null) tickAngerPassing(pathAwareEntity)
+        if (pathAwareEntity.target != null) tickAngerPassing(pathAwareEntity)
         if (pathAwareEntity.hasAngerTime()) (pathAwareEntity as PlayerHitTimerAccessor).setPlayerHitTimer(pathAwareEntity.age)
     }
     fun <T> neutralAnimalGoalAndTargets(goalSelector: GoalSelector, targetSelector: GoalSelector, pathAwareEntity: T) where T : PathAwareEntity, T: DefaultAngerable {
