@@ -8,7 +8,8 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,10 +28,10 @@ public abstract class ChickenEntityToNeutral extends AnimalEntity implements Def
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
     @Inject(method = "initGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (ChickenEntity & DefaultAngerable) (Object) this); }
-    @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
-    private void hookWriteCustomDataToTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) writeAngerToNbt(nbt); }
-    @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
-    private void hookReadCustomDataFromTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) readAngerFromNbt(getWorld(), nbt); }
+    @Inject(method = "writeCustomData", at = @At("RETURN"))
+    private void hookWriteCustomData(WriteView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) writeAngerToData(view); }
+    @Inject(method = "readCustomData", at = @At("RETURN"))
+    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) readAngerFromData(getWorld(), view); }
     @ModifyReturnValue(method = "createChickenAttributes", at = @At("RETURN"))
     private static DefaultAttributeContainer.Builder hookCreateChickenAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }

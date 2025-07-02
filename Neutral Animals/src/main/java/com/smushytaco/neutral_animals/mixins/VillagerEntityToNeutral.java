@@ -8,7 +8,8 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,10 +26,10 @@ public abstract class VillagerEntityToNeutral extends MerchantEntity implements 
     @Override
     @SuppressWarnings("AddedMixinMembersNamePattern")
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
-    @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
-    private void hookWriteCustomDataToTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) writeAngerToNbt(nbt); }
-    @Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
-    private void hookReadCustomDataFromTag(NbtCompound nbt, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) readAngerFromNbt(getWorld(), nbt); }
+    @Inject(method = "writeCustomData", at = @At("RETURN"))
+    private void hookWriteCustomData(WriteView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) writeAngerToData(view); }
+    @Inject(method = "readCustomData", at = @At("RETURN"))
+    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) readAngerFromData(getWorld(), view); }
     @Inject(method = "mobTick", at = @At("HEAD"))
     private void mobTick(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((VillagerEntity & DefaultAngerable) (Object) this); }
     @ModifyReturnValue(method = "createVillagerAttributes", at = @At("RETURN"))

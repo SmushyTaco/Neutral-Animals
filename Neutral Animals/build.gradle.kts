@@ -40,7 +40,6 @@ tasks {
         compilerOptions {
             extraWarnings = true
             jvmTarget = JvmTarget.valueOf("JVM_$javaVersion")
-            freeCompilerArgs = listOf("-Xjvm-default=all-compatibility")
         }
     }
     jar { from("LICENSE") { rename { "${it}_${base.archivesName.get()}" } } }
