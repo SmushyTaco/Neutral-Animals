@@ -31,7 +31,7 @@ public abstract class ChickenEntityToNeutral extends AnimalEntity implements Def
     @Inject(method = "writeCustomData", at = @At("RETURN"))
     private void hookWriteCustomData(WriteView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) writeAngerToData(view); }
     @Inject(method = "readCustomData", at = @At("RETURN"))
-    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) readAngerFromData(getWorld(), view); }
+    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) readAngerFromData(getEntityWorld(), view); }
     @ModifyReturnValue(method = "createChickenAttributes", at = @At("RETURN"))
     private static DefaultAttributeContainer.Builder hookCreateChickenAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }

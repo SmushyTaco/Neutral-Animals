@@ -31,7 +31,7 @@ public abstract class PigEntityToNeutral extends AnimalEntity implements Default
     @Inject(method = "writeCustomData", at = @At("RETURN"))
     private void hookWriteCustomData(WriteView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) writeAngerToData(view); }
     @Inject(method = "readCustomData", at = @At("RETURN"))
-    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) readAngerFromData(getWorld(), view); }
+    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) readAngerFromData(getEntityWorld(), view); }
     @ModifyReturnValue(method = "createPigAttributes", at = @At("RETURN"))
     private static DefaultAttributeContainer.Builder hookCreatePigAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
 }

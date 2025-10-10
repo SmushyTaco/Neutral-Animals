@@ -23,8 +23,8 @@ object NeutralAnimals : ModInitializer {
     val ANGER_PASSING_COOLDOWN_RANGE: UniformIntProvider = TimeHelper.betweenSeconds(4, 6)
     private fun <T: PathAwareEntity> angerNearbyPathAwareEntities(pathAwareEntity: T) {
         val followRange = pathAwareEntity.getAttributeValue(EntityAttributes.FOLLOW_RANGE)
-        val box = Box.from(pathAwareEntity.pos).expand(followRange, 10.0, followRange)
-        pathAwareEntity.world.getEntitiesByClass(pathAwareEntity.javaClass, box, EntityPredicates.EXCEPT_SPECTATOR).stream().filter { it !== pathAwareEntity }.filter { it.target == null }.filter { it.isTeammate(pathAwareEntity.target) }.forEach { it.target = pathAwareEntity.target }
+        val box = Box.from(pathAwareEntity.entityPos).expand(followRange, 10.0, followRange)
+        pathAwareEntity.entityWorld.getEntitiesByClass(pathAwareEntity.javaClass, box, EntityPredicates.EXCEPT_SPECTATOR).stream().filter { it !== pathAwareEntity }.filter { it.target == null }.filter { it.isTeammate(pathAwareEntity.target) }.forEach { it.target = pathAwareEntity.target }
     }
     private fun <T> tickAngerPassing(pathAwareEntity: T) where T : PathAwareEntity, T : DefaultAngerable {
         if (pathAwareEntity.defaultAngerableValues.angerPassingCooldown > 0) {
@@ -41,7 +41,7 @@ object NeutralAnimals : ModInitializer {
         } else if (entityAttributeInstance.hasModifier(ATTACKING_SPEED_BOOST_IDENTIFIER)) {
             entityAttributeInstance.removeModifier(ATTACKING_SPEED_BOOST)
         }
-        pathAwareEntity.tickAngerLogic(pathAwareEntity.world as ServerWorld, true)
+        pathAwareEntity.tickAngerLogic(pathAwareEntity.entityWorld as ServerWorld, true)
         if (pathAwareEntity.target != null) tickAngerPassing(pathAwareEntity)
         if (pathAwareEntity.hasAngerTime()) (pathAwareEntity as PlayerHitTimerAccessor).setPlayerHitTimer(pathAwareEntity.age)
     }

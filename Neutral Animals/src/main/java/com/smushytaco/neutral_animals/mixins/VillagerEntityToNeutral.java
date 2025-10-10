@@ -29,7 +29,7 @@ public abstract class VillagerEntityToNeutral extends MerchantEntity implements 
     @Inject(method = "writeCustomData", at = @At("RETURN"))
     private void hookWriteCustomData(WriteView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) writeAngerToData(view); }
     @Inject(method = "readCustomData", at = @At("RETURN"))
-    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) readAngerFromData(getWorld(), view); }
+    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) readAngerFromData(getEntityWorld(), view); }
     @Inject(method = "mobTick", at = @At("HEAD"))
     private void mobTick(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((VillagerEntity & DefaultAngerable) (Object) this); }
     @ModifyReturnValue(method = "createVillagerAttributes", at = @At("RETURN"))

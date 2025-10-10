@@ -31,6 +31,6 @@ public abstract class AnimalEntityMixin extends PassiveEntity {
     private void hookReadCustomData(ReadView view, CallbackInfo ci) {
         AnimalEntity animalEntity = (AnimalEntity) (Object) this;
         if (!(animalEntity instanceof DefaultAngerable defaultAngerable)) return;
-        if (animalEntity instanceof CowEntity && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) defaultAngerable.readAngerFromData(getWorld(), view);
+        if (animalEntity instanceof CowEntity && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) defaultAngerable.readAngerFromData(getEntityWorld(), view);
     }
 }

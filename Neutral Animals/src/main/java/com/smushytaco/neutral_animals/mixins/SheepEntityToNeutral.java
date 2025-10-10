@@ -31,7 +31,7 @@ public abstract class SheepEntityToNeutral extends AnimalEntity implements Defau
     @Inject(method = "writeCustomData", at = @At("RETURN"))
     private void hookWriteCustomData(WriteView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) writeAngerToData(view); }
     @Inject(method = "readCustomData", at = @At("RETURN"))
-    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) readAngerFromData(getWorld(), view); }
+    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) readAngerFromData(getEntityWorld(), view); }
     @Inject(method = "mobTick", at = @At("HEAD"))
     protected void hookMobTick(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((SheepEntity & DefaultAngerable) (Object) this); }
     @ModifyReturnValue(method = "createSheepAttributes", at = @At("RETURN"))
