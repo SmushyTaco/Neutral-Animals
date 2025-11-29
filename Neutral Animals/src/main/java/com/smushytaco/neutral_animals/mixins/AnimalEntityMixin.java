@@ -1,36 +1,40 @@
 package com.smushytaco.neutral_animals.mixins;
 import com.smushytaco.neutral_animals.NeutralAnimals;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.*;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-@Mixin(AnimalEntity.class)
-public abstract class AnimalEntityMixin extends PassiveEntity {
-    protected AnimalEntityMixin(EntityType<? extends PassiveEntity> entityType, World world) { super(entityType, world); }
-    @Inject(method = "mobTick", at = @At("HEAD"))
+@Mixin(Animal.class)
+public abstract class AnimalEntityMixin extends AgeableMob {
+    protected AnimalEntityMixin(EntityType<? extends AgeableMob> entityType, Level world) { super(entityType, world); }
+    @Inject(method = "customServerAiStep", at = @At("HEAD"))
     @SuppressWarnings("DataFlowIssue")
     private void hookMobTick(CallbackInfo ci) {
-        AnimalEntity animalEntity = (AnimalEntity) (Object) this;
-        if (animalEntity instanceof ChickenEntity && NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((ChickenEntity & DefaultAngerable) (Object) this);
-        if (animalEntity instanceof CowEntity && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((CowEntity & DefaultAngerable) (Object) this);
-        if (animalEntity instanceof PigEntity && NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((PigEntity & DefaultAngerable) (Object) this);
+        Animal animalEntity = (Animal) (Object) this;
+        if (animalEntity instanceof Chicken && NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((Chicken & DefaultAngerable) (Object) this);
+        if (animalEntity instanceof Cow && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((Cow & DefaultAngerable) (Object) this);
+        if (animalEntity instanceof Pig && NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral()) NeutralAnimals.INSTANCE.mobTickLogic((Pig & DefaultAngerable) (Object) this);
     }
-    @Inject(method = "writeCustomData", at = @At("RETURN"))
-    private void hookWriteCustomData(WriteView view, CallbackInfo ci) {
-        AnimalEntity animalEntity = (AnimalEntity) (Object) this;
+    @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
+    private void hookWriteCustomData(ValueOutput view, CallbackInfo ci) {
+        Animal animalEntity = (Animal) (Object) this;
         if (!(animalEntity instanceof DefaultAngerable defaultAngerable)) return;
-        if (animalEntity instanceof CowEntity && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) defaultAngerable.writeAngerToData(view);
+        if (animalEntity instanceof Cow && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) defaultAngerable.addPersistentAngerSaveData(view);
     }
-    @Inject(method = "readCustomData", at = @At("RETURN"))
-    private void hookReadCustomData(ReadView view, CallbackInfo ci) {
-        AnimalEntity animalEntity = (AnimalEntity) (Object) this;
+    @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
+    private void hookReadCustomData(ValueInput view, CallbackInfo ci) {
+        Animal animalEntity = (Animal) (Object) this;
         if (!(animalEntity instanceof DefaultAngerable defaultAngerable)) return;
-        if (animalEntity instanceof CowEntity && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) defaultAngerable.readAngerFromData(getEntityWorld(), view);
+        if (animalEntity instanceof Cow && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral()) defaultAngerable.readPersistentAngerSaveData(level(), view);
     }
 }

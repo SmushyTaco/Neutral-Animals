@@ -3,35 +3,35 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.smushytaco.neutral_animals.NeutralAnimals;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerableValues;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.ChickenEntity;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-@Mixin(ChickenEntity.class)
-public abstract class ChickenEntityToNeutral extends AnimalEntity implements DefaultAngerable {
-    protected ChickenEntityToNeutral(EntityType<? extends AnimalEntity> entityType, World world) { super(entityType, world); }
+@Mixin(Chicken.class)
+public abstract class ChickenEntityToNeutral extends Animal implements DefaultAngerable {
+    protected ChickenEntityToNeutral(EntityType<? extends Animal> entityType, Level world) { super(entityType, world); }
     @Unique
     DefaultAngerableValues defaultAngerableValues = new DefaultAngerableValues();
     @NotNull
     @Override
     @SuppressWarnings("AddedMixinMembersNamePattern")
     public DefaultAngerableValues getDefaultAngerableValues() { return defaultAngerableValues; }
-    @Inject(method = "initGoals", at = @At("RETURN"))
-    private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (ChickenEntity & DefaultAngerable) (Object) this); }
-    @Inject(method = "writeCustomData", at = @At("RETURN"))
-    private void hookWriteCustomData(WriteView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) writeAngerToData(view); }
-    @Inject(method = "readCustomData", at = @At("RETURN"))
-    private void hookReadCustomData(ReadView view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) readAngerFromData(getEntityWorld(), view); }
-    @ModifyReturnValue(method = "createChickenAttributes", at = @At("RETURN"))
-    private static DefaultAttributeContainer.Builder hookCreateChickenAttributes(DefaultAttributeContainer.Builder original) { return original.add(EntityAttributes.ATTACK_DAMAGE); }
+    @Inject(method = "registerGoals", at = @At("RETURN"))
+    private void hookInitGoals(CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (Chicken & DefaultAngerable) (Object) this); }
+    @Inject(method = "addAdditionalSaveData", at = @At("RETURN"))
+    private void hookWriteCustomData(ValueOutput view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) addPersistentAngerSaveData(view); }
+    @Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
+    private void hookReadCustomData(ValueInput view, CallbackInfo ci) { if (NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral()) readPersistentAngerSaveData(level(), view); }
+    @ModifyReturnValue(method = "createAttributes", at = @At("RETURN"))
+    private static AttributeSupplier.Builder hookCreateChickenAttributes(AttributeSupplier.Builder original) { return original.add(Attributes.ATTACK_DAMAGE); }
 }

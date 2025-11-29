@@ -1,17 +1,17 @@
 package com.smushytaco.neutral_animals.angerable_defaults
 import com.smushytaco.neutral_animals.NeutralAnimals.ANGER_TIME_RANGE
 import com.smushytaco.neutral_animals.mixins.EntityRandomAccessor
-import net.minecraft.entity.Entity
-import net.minecraft.entity.mob.Angerable
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.NeutralMob
 import java.util.*
-interface DefaultAngerable: Angerable {
+interface DefaultAngerable: NeutralMob {
     val defaultAngerableValues: DefaultAngerableValues
-    override fun getAngerTime() = defaultAngerableValues.angerTime
-    override fun setAngerTime(ticks: Int) { defaultAngerableValues.angerTime = ticks }
-    override fun getAngryAt(): UUID? = defaultAngerableValues.targetUuid
-    override fun setAngryAt(uuid: UUID?) { defaultAngerableValues.targetUuid = uuid }
-    override fun chooseRandomAngerTime() {
+    override fun getRemainingPersistentAngerTime() = defaultAngerableValues.angerTime
+    override fun setRemainingPersistentAngerTime(ticks: Int) { defaultAngerableValues.angerTime = ticks }
+    override fun getPersistentAngerTarget(): UUID? = defaultAngerableValues.targetUuid
+    override fun setPersistentAngerTarget(uuid: UUID?) { defaultAngerableValues.targetUuid = uuid }
+    override fun startPersistentAngerTimer() {
         if (this !is Entity) return
-        angerTime = ANGER_TIME_RANGE[(this as EntityRandomAccessor).random]
+        remainingPersistentAngerTime = ANGER_TIME_RANGE.sample((this as EntityRandomAccessor).random)
     }
 }

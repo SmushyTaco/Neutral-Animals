@@ -1,13 +1,18 @@
 package com.smushytaco.neutral_animals.mixins;
 import com.smushytaco.neutral_animals.NeutralAnimals;
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.GoalSelector;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,9 +20,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-@Mixin(MobEntity.class)
+@Mixin(Mob.class)
 public abstract class MobEntityMixin extends LivingEntity {
-    protected MobEntityMixin(EntityType<? extends LivingEntity> entityType, World world) { super(entityType, world); }
+    protected MobEntityMixin(EntityType<? extends LivingEntity> entityType, Level world) { super(entityType, world); }
     @Shadow
     @Nullable
     public abstract LivingEntity getTarget();
@@ -29,15 +34,15 @@ public abstract class MobEntityMixin extends LivingEntity {
     protected GoalSelector targetSelector;
     @Inject(method = "setTarget", at = @At("HEAD"))
     private void hookSetTarget(@Nullable LivingEntity target, CallbackInfo ci) {
-        MobEntity mobEntity = (MobEntity) (Object) this;
+        Mob mobEntity = (Mob) (Object) this;
         if (!(mobEntity instanceof DefaultAngerable defaultAngerable)) return;
-        if (mobEntity instanceof ChickenEntity && NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral() || mobEntity instanceof CowEntity && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral() || mobEntity instanceof PigEntity && NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral() || mobEntity instanceof RabbitEntity && NeutralAnimals.INSTANCE.getConfig().getRabbitsAreNeutral() || mobEntity instanceof SheepEntity && NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral() || mobEntity instanceof VillagerEntity && NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) {
-            if (getTarget() == null && target != null) defaultAngerable.getDefaultAngerableValues().setAngerPassingCooldown(NeutralAnimals.INSTANCE.getANGER_PASSING_COOLDOWN_RANGE().get(random));
-            if (target instanceof PlayerEntity playerEntity) setAttacking(playerEntity, 100);
+        if (mobEntity instanceof Chicken && NeutralAnimals.INSTANCE.getConfig().getChickensAreNeutral() || mobEntity instanceof Cow && NeutralAnimals.INSTANCE.getConfig().getCowsAreNeutral() || mobEntity instanceof Pig && NeutralAnimals.INSTANCE.getConfig().getPigsAreNeutral() || mobEntity instanceof Rabbit && NeutralAnimals.INSTANCE.getConfig().getRabbitsAreNeutral() || mobEntity instanceof Sheep && NeutralAnimals.INSTANCE.getConfig().getSheepAreNeutral() || mobEntity instanceof Villager && NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) {
+            if (getTarget() == null && target != null) defaultAngerable.getDefaultAngerableValues().setAngerPassingCooldown(NeutralAnimals.INSTANCE.getANGER_PASSING_COOLDOWN_RANGE().sample(random));
+            if (target instanceof Player playerEntity) setLastHurtByPlayer(playerEntity, 100);
         }
     }
-    @Inject(method = "initGoals", at = @At("RETURN"))
+    @Inject(method = "registerGoals", at = @At("RETURN"))
     private void hookInitGoals(CallbackInfo ci) {
-        if ((MobEntity) (Object) this instanceof VillagerEntity && NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (VillagerEntity & DefaultAngerable) (Object) this);
+        if ((Mob) (Object) this instanceof Villager && NeutralAnimals.INSTANCE.getConfig().getVillagersAreNeutral()) NeutralAnimals.INSTANCE.neutralAnimalGoalAndTargets(goalSelector, targetSelector, (Villager & DefaultAngerable) (Object) this);
     }
 }
