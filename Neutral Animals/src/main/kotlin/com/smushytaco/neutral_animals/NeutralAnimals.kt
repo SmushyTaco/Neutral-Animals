@@ -2,7 +2,7 @@ package com.smushytaco.neutral_animals
 import com.smushytaco.neutral_animals.angerable_defaults.DefaultAngerable
 import com.smushytaco.neutral_animals.mixins.PlayerHitTimerAccessor
 import net.fabricmc.api.ModInitializer
-import net.minecraft.resources.ResourceLocation
+import net.minecraft.resources.Identifier
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.TimeUtil
 import net.minecraft.util.valueproviders.UniformInt
@@ -21,7 +21,7 @@ import net.minecraft.world.phys.AABB
 object NeutralAnimals : ModInitializer {
     const val MOD_ID = "neutral_animals"
     val config = ModConfig.createAndLoad()
-    private val ATTACKING_SPEED_BOOST_IDENTIFIER = ResourceLocation.fromNamespaceAndPath(MOD_ID, "attacking_speed_boost")
+    private val ATTACKING_SPEED_BOOST_IDENTIFIER = Identifier.fromNamespaceAndPath(MOD_ID, "attacking_speed_boost")
     private val ATTACKING_SPEED_BOOST = AttributeModifier(ATTACKING_SPEED_BOOST_IDENTIFIER, 0.05, AttributeModifier.Operation.ADD_VALUE)
     val ANGER_TIME_RANGE: UniformInt = TimeUtil.rangeOfSeconds(20, 39)
     val ANGER_PASSING_COOLDOWN_RANGE: UniformInt = TimeUtil.rangeOfSeconds(4, 6)
